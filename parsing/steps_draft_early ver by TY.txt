@@ -1,0 +1,53 @@
+
+1. Pre-processing
+   1.1 Remove ASCII encoded graphics
+   1.2 Remove SEC header 
+       To remove between HTML<IMS-HEADER> or <SEC-HEADER>
+       Remark. I don't know if SEC used any other type of header in their messy long history.
+   1.3 Re-encoded characters 
+       translate encoded characters such as &NBSP(blank space) or &AMP (&) back to their original ACSII form.
+   1.4 Exhibits
+       remove all text between <TYPE>EX tag.
+   1.5 Remove tables
+       Remark 1. According to "When is a liability not a liability_Loughran and McDonald 2011", if a table contains 25% or more numbers, then delete it.
+                 This 25% threshold has been changed to 10% in "Measuring readability_Loughran and McDonald 2013".
+       Remark 2. Further according to "Text mining of unstructure corp filings_Wolfe 2017", some tables could containing section names.
+                 Their decision is if the objective of the research relying on spliting the document into sections, then one might not removing those tables
+                 containing sesction tags.  
+       comment: the "table deleting function" need to have at least 2 parameters
+                para 1: for those tables that containing the name of certain section, to determine whether to keep that table or not.
+                para 2: the threshold of percentage of numbers (in a table) used for table deletion.
+   1.6 Remove HTML
+
+2. Split the documents into sections
+   Remark: this step will only be used for research depending on section specific analysis
+
+3. Parse into tokens
+   Loughran & McDonald used a regular expression (regex) to parse the remaining string
+   variable into all collections of two or more alphabetic characters. (Hyphens are also
+   allowed in the character collections.) We first replace all hyphens followed by a line-feed
+   with a hyphen so that the word boundary regex works correctly.
+
+4. Identify words
+   Words are those tokens (from previous step) that are within a pre-defined master dictionary.
+   Remark 1.One should also considering identify numbers. 
+            To define the rule is important.
+            For example, according to the code of Generic_Parser.py, there authors incude additional rules to detect words written in format 1234,56.
+   
+5. Filter out irrelevant words
+   Remark. This step is taken by Wolfe. 
+           Wolfe also filter out 
+           1) Stop words
+           2) generic words
+           3) names
+           4) Geographics
+           I would suggest looking at  Loughran & McDonald's code, they could have some extra word list hard coded in the code.
+           One should also look for external libraries. 
+
+
+   
+            
+
+       
+       
+      
